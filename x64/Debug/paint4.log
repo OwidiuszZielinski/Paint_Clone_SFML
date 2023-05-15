@@ -1,0 +1,5 @@
+﻿  main.cpp
+C:\Users\Micha\source\repos\paint4\paint4\CurrentPick.h(38,26): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Micha\source\repos\paint4\paint4\CurrentPick.h(40,40): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Micha\source\repos\paint4\paint4\CurrentPick.h(40,28): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+  paint4.vcxproj -> C:\Users\Micha\source\repos\paint4\x64\Debug\paint4.exe
