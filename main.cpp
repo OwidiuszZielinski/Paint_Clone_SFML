@@ -15,7 +15,7 @@ CurrentPick pick;
 
 bool checkCords() {
 	sf::Vector2i relCordsi = sf::Mouse::getPosition(window);
-	//std::cout << "X :" << relCordsi.x << " Y: " << relCordsi.y<<std::endl;
+	std::cout << "X :" << relCordsi.x << " Y: " << relCordsi.y<<std::endl;
 	for (auto& elem : picker.initListColors()) {
 	if (relCordsi.x < elem.getXPos()+30 && relCordsi.y < elem.getYPos()+30)
 	{
