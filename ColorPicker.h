@@ -75,7 +75,97 @@ public:
         return rs;
 
     }
+    void drawPlusIcon(sf::RenderTexture& canvas, sf::Font font, int x, int y) {
+
+        sf::Text test("\U0000002B", font, 86);
+        test.setPosition(x, y);
+        test.setFillColor(sf::Color::Black);
+        canvas.draw(test);
+
+    }
+    void drawMinusIcon(sf::RenderTexture& canvas, sf::Font font, int x, int y) {
+
+        sf::Text test("\u002D", font, 86);
+        test.setPosition(x, y);
+        test.setFillColor(sf::Color::Black);
+        canvas.draw(test);
+
+    }
+    void drawPngButton(sf::RenderTexture& canvas, sf::Font font, int x, int y) {
+        sf::RectangleShape button(sf::Vector2f(150, 30));
+
+        button.setFillColor(sf::Color::White);
+        button.setOutlineThickness(2.0f);
+        button.setOutlineColor(sf::Color::Black);
+        button.setPosition(x, y);
+        sf::Text buttonText("Save as PNG", font, 16);
+        buttonText.setFillColor(sf::Color::Black);
+        buttonText.setPosition(button.getPosition().x + button.getSize().x / 2 - buttonText.getGlobalBounds().width / 2,
+        button.getPosition().y + button.getSize().y / 2 - buttonText.getGlobalBounds().height / 2);
+
+        canvas.draw(button);
+        canvas.draw(buttonText);
+    }
+    void drawJpgButton(sf::RenderTexture& canvas, sf::Font font, int x, int y) {
+        sf::RectangleShape button(sf::Vector2f(150, 30));
+ 
+        button.setFillColor(sf::Color::White);
+        button.setOutlineThickness(2.0f);
+        button.setOutlineColor(sf::Color::Black);
+        button.setPosition(x, y);
+        button.setFillColor(sf::Color::White);
+        sf::Text buttonText("Save as JPEG", font, 16);
+
+        buttonText.setFillColor(sf::Color::Black);
+        buttonText.setPosition(button.getPosition().x + button.getSize().x / 2 - buttonText.getGlobalBounds().width / 2,
+        button.getPosition().y + button.getSize().y / 2 - buttonText.getGlobalBounds().height / 2);
+
+        canvas.draw(button);
+        canvas.draw(buttonText);
+    }
+    void drawLoadJpgButton(sf::RenderTexture& canvas, sf::Font font, int x, int y) {
+        sf::RectangleShape button(sf::Vector2f(150, 30));
+
+        button.setFillColor(sf::Color::White);
+        button.setOutlineThickness(2.0f);
+        button.setOutlineColor(sf::Color::Black);
+        button.setPosition(x, y);
+        button.setFillColor(sf::Color::White);
+        sf::Text buttonText("Load a JPEG", font, 16);
+        buttonText.setFillColor(sf::Color::Black);
+        buttonText.setPosition(button.getPosition().x + button.getSize().x / 2 - buttonText.getGlobalBounds().width / 2,
+        button.getPosition().y + button.getSize().y / 2 - buttonText.getGlobalBounds().height / 2);
+
+        canvas.draw(button);
+        canvas.draw(buttonText);
+    }
+    void drawLoadPngButton(sf::RenderTexture& canvas, sf::Font font, int x, int y) {
+        sf::RectangleShape button(sf::Vector2f(150, 30));
+
+        button.setFillColor(sf::Color::White);
+        button.setOutlineThickness(2.0f);
+        button.setOutlineColor(sf::Color::Black);
+        button.setPosition(x, y);
+        sf::Text buttonText("Load a PNG", font, 16);
+        buttonText.setFillColor(sf::Color::Black);
+        buttonText.setPosition(button.getPosition().x + button.getSize().x / 2 - buttonText.getGlobalBounds().width / 2,
+        button.getPosition().y + button.getSize().y / 2 - buttonText.getGlobalBounds().height / 2);
+
+        canvas.draw(button);
+        canvas.draw(buttonText);
+    }
     
+    void drawFillUpIcon(sf::RenderTexture& canvas, sf::Font font, int x, int y) {
+            sf::Texture iconTexture;
+            iconTexture.loadFromFile("fill.jpg");
+            sf::Sprite icon;
+            icon.setTexture(iconTexture);
+            icon.setPosition(x, y);
+            icon.setScale(0.15f, 0.15f);
+            canvas.draw(icon);
+        
+
+    }
 
     std::list<ColorPicker> initListColors() {
        std::list<ColorPicker> initList;
@@ -143,6 +233,7 @@ public:
         // Sprawdzenie, czy ci¹g pasuje do wzorca wyra¿enia regularnego
         return std::regex_match(color, colorRegex);
     }
+    
     
 
 
