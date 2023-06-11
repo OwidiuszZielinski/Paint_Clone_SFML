@@ -9,7 +9,6 @@
 #include "CirclePen.h"
 #include "SquarePen.h"
 #include "TrianglePen.h"
-#include "FillPen.h"
 #include "Line.h"
 #include "FileMenager.h"
 #include "circle.h"
@@ -25,12 +24,10 @@ sf::Color lineColor = sf::Color::Black;
 
 ColorPicker picker;
 CurrentPick pick;
-FillPen fillpen(320, 15);
 
 Toolbar toolbar;
 Tool* currentTool;
 int currentWindow;
-
 
 
 void initToolbar()
@@ -42,8 +39,10 @@ void initToolbar()
 	toolbar.Tools.push_back(new circle(35, 110));
 	toolbar.Tools.push_back(new square(75, 110));
 	toolbar.Tools.push_back(new triangle(115, 105));
-	
+
+
 	toolbar.DrawToolbarIcons(canvasToolbar);
+
 	sf::Sprite canvasSpritex(canvasToolbar.getTexture());
 	windowToolbar.draw(canvasSpritex);
 	windowToolbar.display();
@@ -52,21 +51,11 @@ void initToolbar()
 
 bool checkCords() {
 	sf::Vector2i relCordsi = sf::Mouse::getPosition(window);
-	//std::cout << "X :" << relCordsi.x << " Y: " << relCordsi.y << std::endl;
-	if (relCordsi.x > 410 && relCordsi.x < 450 && relCordsi.y < 60 && relCordsi.y > 20) {
-		brush.setRadius(brush.getRadius() - 0.1f);
-		std::cout << "Radius down : " << brush.getRadius() << std::endl;
-
-	}
-	if (relCordsi.x > 460 && relCordsi.x < 510 && relCordsi.y < 65 && relCordsi.y > 15) {
-		brush.setRadius(brush.getRadius() + 0.1f);
-		std::cout << "Radius up : " << brush.getRadius() << std::endl;
-
-	}
+	std::cout << "X :" << relCordsi.x << " Y: " << relCordsi.y << std::endl;
 	for (auto& elem : picker.initListColors()) {
-		if (relCordsi.x>600 && relCordsi.x < elem.getXPos() + 30 && relCordsi.y < elem.getYPos() + 30)
-		{
-
+		if (relCordsi.x < elem.getXPos() + 30 && relCordsi.y < elem.getYPos() + 30)
+		{	
+			
 			brush.setFillColor(elem.getColor());
 			pick.setColor(elem.getColor());
 			pick.draw(canvas);
@@ -124,12 +113,8 @@ int main()
 	sf::Sprite canvasSpritex(canvasToolbar.getTexture());
 	windowToolbar.draw(canvasSpritex);
 	windowToolbar.display();
+
 	initToolbar();
-
-	//FillPen
-	fillpen.DrawToolbarIcon(canvas);
-	
-
 
 	sf::Font font;
 	font.loadFromFile("./Montserrat-Regular.ttf");
@@ -140,7 +125,7 @@ int main()
 	std::string s = "";
 	std::string setHex = "";
 
-
+	
 
 	picker.drawPlusIcon(canvas, font, 460, -10);
 	picker.drawMinusIcon(canvas, font, 410, -17);
@@ -148,7 +133,7 @@ int main()
 	picker.drawJpgButton(canvas, font, 2, 37);
 	picker.drawLoadPngButton(canvas, font, 152, 5);
 	picker.drawLoadJpgButton(canvas, font, 152, 37);
-	
+	picker.drawFillUpIcon(canvas, font, 320, 15);
 
 
 
@@ -170,7 +155,7 @@ int main()
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 				sf::Vector2i relCordsi = sf::Mouse::getPosition(windowToolbar);
 				std::cout << "Toolbar: X :" << relCordsi.x << " Y: " << relCordsi.y << std::endl;
-				
+
 
 				if (currentWindow == 1)
 				{
@@ -186,6 +171,9 @@ int main()
 		}
 
 
+		sf::Sprite canvasSpritex(canvasToolbar.getTexture());
+		windowToolbar.draw(canvasSpritex);
+		windowToolbar.display();
 
 
 		while (window.pollEvent(event)) {
@@ -193,17 +181,10 @@ int main()
 			if (event.type == sf::Event::Closed) {
 				window.close();
 			}
-
-
 			sf::Vector2f ms = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-			linia(window, brush, event, canvas, lineColor);
-
+			linia(window, event, canvas, lineColor);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 
-				if (ms.x > 320 && ms.x < 375 && ms.y > 15 && ms.y < 70) {
-					currentTool = &fillpen;
-					std::cout << "Tool is set to  fillPen "<<std::endl;
-				}
 
 				if (ms.x < 150 && ms.y < 35) {
 					if (saveCanvasToFile("canvas.png", canvas)) {
@@ -232,47 +213,51 @@ int main()
 
 
 
-				if (ms.x < 150 && ms.y > 35 && ms.y < 70) {
-					if (saveCanvasToFile("canvas.jpeg", canvas)) {
-						std::cout << "Canvas saved to file: canvas.jpeg" << std::endl;
+					if (ms.x < 150 && ms.y > 35 && ms.y < 70) {
+						if (saveCanvasToFile("canvas.jpeg", canvas)) {
+							std::cout << "Canvas saved to file: canvas.jpeg" << std::endl;
+						}
+						else {
+							std::cout << "Failed to save canvas!" << std::endl;
+						}
 					}
-					else {
-						std::cout << "Failed to save canvas!" << std::endl;
+					if (ms.x > 150 && ms.x < 300 && ms.y > 35 && ms.y < 70) {
+						if (loadCanvasFromFile("canvas.jpeg", canvas)) {
+							std::cout << "Canvas loaded from file: canvas.jpeg" << std::endl;
+
+							//Odwrócenie canvasu
+							sf::Image image = canvas.getTexture().copyToImage();
+							image.flipVertically();
+							sf::Texture texture;
+							texture.loadFromImage(image);
+							canvas.clear();
+							canvas.draw(sf::Sprite(texture));
+						}
+						else {
+							std::cout << "Failed to load canvas from file!" << std::endl;
+						}
+
+				}
+
+				if (!checkCords()) {
+
+					if (ms.y > 100) {
+						
+						brush.setPosition(ms);
+						
 					}
 				}
-				if (ms.x > 150 && ms.x < 300 && ms.y > 35 && ms.y < 70) {
-					if (loadCanvasFromFile("canvas.jpeg", canvas)) {
-						std::cout << "Canvas loaded from file: canvas.jpeg" << std::endl;
-
-						//Odwrócenie canvasu
-						sf::Image image = canvas.getTexture().copyToImage();
-						image.flipVertically();
-						sf::Texture texture;
-						texture.loadFromImage(image);
-						canvas.clear();
-						canvas.draw(sf::Sprite(texture));
-					}
-					else {
-						std::cout << "Failed to load canvas from file!" << std::endl;
-					}
-
-				}
-
-			
 			}
 
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-				
 				if (!checkCords()) {
 					sf::Vector2f ms = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-					sf::Vector2i relCordsi = sf::Mouse::getPosition(windowToolbar);
-					sf::Image image = canvas.getTexture().copyToImage();
 					if (ms.y > 100) {
-						brush.setPosition(ms);
+						//brush.setPosition(ms);
+
 						if (currentTool != nullptr)
 						{
 							currentTool->process(ms.x, ms.y, canvas);
-							currentTool->floodFill(canvas,ms.x,ms.y,image.getPixel(ms.x,ms.y),lineColor);
 						}
 						else
 						{
@@ -282,12 +267,7 @@ int main()
 					}
 				}
 			}
-			
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-			{
-				currentTool = nullptr;
-				
-			}
+
 
 
 
@@ -299,13 +279,11 @@ int main()
 						t.setString(s);
 						canvas.draw(clear);
 						canvas.draw(t);
-						
 
 					}
 					else if (event.text.unicode == '\r' || event.text.unicode == '\n') {
 						setHex = s;
 						s = "";
-						
 						if (picker.validateHexColor(setHex)) {
 							std::cout << "Color is valid!" << std::endl;
 							canvas.draw(clear);
@@ -321,21 +299,18 @@ int main()
 					}
 					else {
 						// Dodawanie wpisanych znaków
-						if (event.type == sf::Event::TextEntered && event.text.unicode != '\u001B') {
-							s += event.text.unicode;
-							t.setString(s);
-							std::cout << s << std::endl;
-							canvas.draw(t);
-						}
+						s += event.text.unicode;
+						t.setString(s);
+						canvas.draw(t);
 					}
 				}
 
 
 
 			}
-
-
-		}
+					
+				
+			}		
 
 		sf::Sprite canvasSprite(canvas.getTexture());
 		window.draw(canvasSprite);

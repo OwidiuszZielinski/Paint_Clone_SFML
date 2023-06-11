@@ -23,6 +23,7 @@ void Tool::process(int x, int y, sf::RenderTexture &canvas)
     std::cout << "Tool";
 }
 
+
 void Tool::SetColor(sf::Color color)
 {
     this->color = color;
@@ -55,4 +56,10 @@ void Tool::DrawToolbarIcon(sf::RenderTexture& canvas)
 void Tool::SetTool(sf::RenderTexture& canvas)
 {
     std::cout << "Set Tool";
+}
+
+
+void Tool::floodFill(sf::RenderTexture& canvas_image, int x, int y, sf::Color actual, sf::Color newColor)
+{
+    std::cout << "Fil Tool";
 }

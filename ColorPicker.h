@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <list>
 #include <regex>
+#include <vector>
+#include <stack>
 
 
 #define COLORPICKER_H
@@ -75,6 +77,14 @@ public:
         return rs;
 
     }
+
+
+
+ 
+
+
+
+
     void drawPlusIcon(sf::RenderTexture& canvas, sf::Font font, int x, int y) {
 
         sf::Text test("\U0000002B", font, 86);
@@ -155,17 +165,7 @@ public:
         canvas.draw(buttonText);
     }
     
-    void drawFillUpIcon(sf::RenderTexture& canvas, sf::Font font, int x, int y) {
-            sf::Texture iconTexture;
-            iconTexture.loadFromFile("fill.jpg");
-            sf::Sprite icon;
-            icon.setTexture(iconTexture);
-            icon.setPosition(x, y);
-            icon.setScale(0.15f, 0.15f);
-            canvas.draw(icon);
-        
-
-    }
+    
 
     std::list<ColorPicker> initListColors() {
        std::list<ColorPicker> initList;

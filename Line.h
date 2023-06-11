@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 
-void linia(sf::RenderWindow& window, sf::Event event, sf::RenderTexture& canvas, sf::Color lineColor)
+void linia(sf::RenderWindow& window,sf::CircleShape brush, sf::Event event, sf::RenderTexture& canvas, sf::Color lineColor)
 {
     static bool isDrawing = false;
     static sf::Vector2f startPoint;
@@ -22,8 +22,8 @@ void linia(sf::RenderWindow& window, sf::Event event, sf::RenderTexture& canvas,
 
         float lineThickness = 10.0f; // Set the thickness of the line
 
-        sf::Vector2f offset = (lineThickness / 2.0f) * unitPerpendicular;
-
+        sf::Vector2f offset = (brush.getRadius() / 2.0f) * unitPerpendicular;
+        
         line[0].position = startPoint + offset;
         line[1].position = endPoint + offset;
         line[2].position = endPoint - offset;
@@ -39,6 +39,7 @@ void linia(sf::RenderWindow& window, sf::Event event, sf::RenderTexture& canvas,
         isDrawing = false;
 
         if (ms.y > 100) {
+            
             canvas.draw(line);
         }
          // Draw the line on the canvas

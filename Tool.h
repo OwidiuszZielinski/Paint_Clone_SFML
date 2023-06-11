@@ -18,6 +18,7 @@ public:
 	void ClearToolbarIcon(sf::RenderTexture& canvas);
 	virtual void DrawToolbarIcon(sf::RenderTexture& canvas);
 	virtual void SetTool(sf::RenderTexture& canvas);
+	virtual void floodFill(sf::RenderTexture& canvas_image, int x, int y, sf::Color actual, sf::Color newColor);
 
 };
 
