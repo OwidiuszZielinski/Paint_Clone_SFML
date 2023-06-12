@@ -15,6 +15,7 @@
 #include "circle.h"
 #include "square.h"
 #include "triangle.h"
+#include <queue>
 
 sf::CircleShape brush(10.f);
 sf::RenderWindow window(sf::VideoMode(1000, 768), "Paint Clone");
@@ -128,7 +129,7 @@ int main()
 
 	//FillPen
 	fillpen.DrawToolbarIcon(canvas);
-	
+
 
 
 	sf::Font font;
@@ -148,6 +149,7 @@ int main()
 	picker.drawJpgButton(canvas, font, 2, 37);
 	picker.drawLoadPngButton(canvas, font, 152, 5);
 	picker.drawLoadJpgButton(canvas, font, 152, 37);
+
 	
 
 
@@ -251,6 +253,7 @@ int main()
 						texture.loadFromImage(image);
 						canvas.clear();
 						canvas.draw(sf::Sprite(texture));
+						
 					}
 					else {
 						std::cout << "Failed to load canvas from file!" << std::endl;
@@ -265,14 +268,30 @@ int main()
 				
 				if (!checkCords()) {
 					sf::Vector2f ms = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-					sf::Vector2i relCordsi = sf::Mouse::getPosition(windowToolbar);
+					sf::Vector2i relCordsi = sf::Mouse::getPosition(window);
+					std::cout << "FROM IMAGE: X :" << relCordsi.x << " Y: " << relCordsi.y << std::endl;
 					sf::Image image = canvas.getTexture().copyToImage();
 					if (ms.y > 100) {
 						brush.setPosition(ms);
 						if (currentTool != nullptr)
 						{
 							currentTool->process(ms.x, ms.y, canvas);
-							currentTool->floodFill(canvas,ms.x,ms.y,image.getPixel(ms.x,ms.y),lineColor);
+							FillPen* fillPen = dynamic_cast<FillPen*>(currentTool);
+							if (fillPen != nullptr)
+							{
+								sf::Texture texture;
+								sf::Sprite sprite;
+
+								fillPen->floodFill(image, relCordsi, lineColor);
+								//Odwrócenie canvasu
+								image.flipVertically();
+								texture.loadFromImage(image);
+								sprite.setTexture(texture);
+								canvas.draw(sf::Sprite(texture));
+								continue;
+							}
+							
+							
 						}
 						else
 						{

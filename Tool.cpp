@@ -59,7 +59,7 @@ void Tool::SetTool(sf::RenderTexture& canvas)
 }
 
 
-void Tool::floodFill(sf::RenderTexture& canvas_image, int x, int y, sf::Color actual, sf::Color newColor)
+void Tool::floodFill(sf::Image& image, const sf::Vector2i& seedPos,  const sf::Color& fillColor)
 {
     std::cout << "Fil Tool";
 }

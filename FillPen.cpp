@@ -5,62 +5,82 @@ sf::RectangleShape pixel(sf::Vector2f(1, 1));
 
 void FillPen::DrawToolbarIcon(sf::RenderTexture& canvas)
 {
-        sf::Texture iconTexture;
-        iconTexture.loadFromFile("fill.jpg");
-        sf::Sprite icon;
-        icon.setTexture(iconTexture);
-        icon.setPosition(this->pozX, this->pozY);
-        icon.setScale(0.15f, 0.15f);
-        canvas.draw(icon);
+	sf::Texture iconTexture;
+	iconTexture.loadFromFile("fill.jpg");
+	sf::Sprite icon;
+	icon.setTexture(iconTexture);
+	icon.setPosition(this->pozX, this->pozY);
+	icon.setScale(0.15f, 0.15f);
+	canvas.draw(icon);
 
 
-    
+
 }
 
 
-void FillPen::floodFill(sf::RenderTexture &canvas_image, int x,int y, sf::Color actual,sf::Color newColor)
-    {
-   
-    }
-    
+void FillPen::floodFill(sf::Image& image, const sf::Vector2i& relCordsi, const sf::Color& fillColor)
+{
+	std::cout << "FROM METHOD : X :" << relCordsi.x << " Y: " << relCordsi.y << std::endl;
+	if (relCordsi.x >= image.getSize().x || relCordsi.y >= image.getSize().y)
+		return;
+
+	std::stack<sf::Vector2i> fillStack;
+
+
+	fillStack.push(relCordsi);
+
+
+	sf::Color target = image.getPixel(relCordsi.x, relCordsi.y);
+	std::cout << "Target Color: R:" << static_cast<int>(target.r)
+          << " G:" << static_cast<int>(target.g)
+          << " B:" << static_cast<int>(target.b)
+          << " A:" << static_cast<int>(target.a) << std::endl;
+
+	while (!fillStack.empty())
+	{
+
+
+		sf::Vector2i currentPos = fillStack.top();
+
+		fillStack.pop();
+
+
+		if (currentPos.x < image.getSize().x && currentPos.y < image.getSize().y)
+		{
+
+			if (currentPos.y < 678)
+			{
+
+				sf::Color currentColor = image.getPixel(currentPos.x, currentPos.y);
+				
+				if (currentColor == target && currentColor != fillColor)
+				{
+					image.setPixel(currentPos.x, currentPos.y, fillColor);
+					fillStack.push(sf::Vector2i(currentPos.x, currentPos.y - 1)); // Up
+					fillStack.push(sf::Vector2i(currentPos.x, currentPos.y + 1)); // Down
+					fillStack.push(sf::Vector2i(currentPos.x - 1, currentPos.y)); // Left
+					fillStack.push(sf::Vector2i(currentPos.x + 1, currentPos.y)); // Right
+				}
+
+			}
+		}
+	}
+}
+
 
 
 
 void FillPen::process(int x, int y, sf::RenderTexture& canvas)
 {
-    sf::Image image = canvas.getTexture().copyToImage();
-    sf::Vector2u textureSize = image.getSize();
-    sf::Color targetColor = canvas.getTexture().copyToImage().getPixel(x, y);
-    sf::CircleShape brush(1.0f);
-
-    brush.setFillColor(this->color);
-
-    for (int i = x; i < textureSize.x; i++) {
-        brush.setPosition(i, y);
-        canvas.draw(brush);
-    }
-
-    for (int i = x; i >= 0; i--) {
-        brush.setPosition(i, y);
-        canvas.draw(brush);
-    }
-
-    for (int j = y; j < textureSize.y; j++) {
-        brush.setPosition(x, j);
-        canvas.draw(brush);
-    }
-
-    for (int j = y; j >= 100; j--) {
-        brush.setPosition(x, j);
-        canvas.draw(brush);
-    }
+	
+	
 }
 
 void FillPen::SetTool(sf::RenderTexture& canvas)
 {
-    
-   
 
-   
+
+
+
 
 }
