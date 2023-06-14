@@ -1,5 +1,5 @@
 #include "FillPen.h"
-#include <stack>
+#include <queue>
 sf::RectangleShape pixel(sf::Vector2f(1, 1));
 
 
@@ -20,11 +20,11 @@ void FillPen::DrawToolbarIcon(sf::RenderTexture& canvas)
 
 void FillPen::floodFill(sf::Image& image, const sf::Vector2i& relCordsi, const sf::Color& fillColor)
 {
-	std::cout << "FROM METHOD : X :" << relCordsi.x << " Y: " << relCordsi.y << std::endl;
+	//std::cout << "FROM METHOD : X :" << relCordsi.x << " Y: " << relCordsi.y << std::endl;
 	if (relCordsi.x >= image.getSize().x || relCordsi.y >= image.getSize().y)
 		return;
 
-	std::stack<sf::Vector2i> fillStack;
+	std::queue<sf::Vector2i> fillStack;
 
 
 	fillStack.push(relCordsi);
@@ -39,8 +39,7 @@ void FillPen::floodFill(sf::Image& image, const sf::Vector2i& relCordsi, const s
 	while (!fillStack.empty())
 	{
 
-
-		sf::Vector2i currentPos = fillStack.top();
+		sf::Vector2i currentPos = fillStack.front();
 
 		fillStack.pop();
 
@@ -48,7 +47,7 @@ void FillPen::floodFill(sf::Image& image, const sf::Vector2i& relCordsi, const s
 		if (currentPos.x < image.getSize().x && currentPos.y < image.getSize().y)
 		{
 
-			if (currentPos.y < 678)
+			if (currentPos.y > 100)
 			{
 
 				sf::Color currentColor = image.getPixel(currentPos.x, currentPos.y);
@@ -56,10 +55,12 @@ void FillPen::floodFill(sf::Image& image, const sf::Vector2i& relCordsi, const s
 				if (currentColor == target && currentColor != fillColor)
 				{
 					image.setPixel(currentPos.x, currentPos.y, fillColor);
-					fillStack.push(sf::Vector2i(currentPos.x, currentPos.y - 1)); // Up
-					fillStack.push(sf::Vector2i(currentPos.x, currentPos.y + 1)); // Down
-					fillStack.push(sf::Vector2i(currentPos.x - 1, currentPos.y)); // Left
-					fillStack.push(sf::Vector2i(currentPos.x + 1, currentPos.y)); // Right
+					if (currentColor == target) {
+						fillStack.push(sf::Vector2i(currentPos.x, currentPos.y - 1)); // Up	
+						fillStack.push(sf::Vector2i(currentPos.x, currentPos.y + 1)); // Down
+						fillStack.push(sf::Vector2i(currentPos.x - 1, currentPos.y)); // Left
+						fillStack.push(sf::Vector2i(currentPos.x + 1, currentPos.y)); // Right
+					}
 				}
 
 			}

@@ -170,15 +170,15 @@ public:
     std::list<ColorPicker> initListColors() {
        std::list<ColorPicker> initList;
        initList.push_back(ColorPicker(15, 25, 600, 5, sf::Color::Black));
-       initList.push_back(ColorPicker (15, 25, 640, 5, sf::Color::Color(127, 127, 127)));
-       initList.push_back(ColorPicker (15, 25, 680, 5, sf::Color::Color(136, 0, 21)));
-       initList.push_back(ColorPicker (15, 25, 720, 5, sf::Color::Color(237, 28, 36)));
-       initList.push_back(ColorPicker (15, 25, 760, 5, sf::Color::Color(255, 127, 39)));
-       initList.push_back(ColorPicker (15, 25, 600, 45, sf::Color::Color(255, 242, 0)));
-       initList.push_back(ColorPicker (15, 25, 640, 45, sf::Color::Color(34, 177, 76)));
-       initList.push_back(ColorPicker (15, 25, 680, 45, sf::Color::Color(0, 162, 232)));
-       initList.push_back(ColorPicker (15, 25, 720, 45, sf::Color::Color(63, 72, 204)));
-       initList.push_back(ColorPicker (15, 25, 760, 45, sf::Color::Color(163, 73, 164)));
+       initList.push_back(ColorPicker (15, 25, 640, 5, sf::Color(127, 127, 127)));
+       initList.push_back(ColorPicker (15, 25, 680, 5, sf::Color(136, 0, 21)));
+       initList.push_back(ColorPicker (15, 25, 720, 5, sf::Color(237, 28, 36)));
+       initList.push_back(ColorPicker (15, 25, 760, 5, sf::Color(255, 127, 39)));
+       initList.push_back(ColorPicker (15, 25, 600, 45, sf::Color(255, 242, 0)));
+       initList.push_back(ColorPicker (15, 25, 640, 45, sf::Color(34, 177, 76)));
+       initList.push_back(ColorPicker (15, 25, 680, 45, sf::Color(0, 162, 232)));
+       initList.push_back(ColorPicker (15, 25, 720, 45, sf::Color(63, 72, 204)));
+       initList.push_back(ColorPicker (15, 25, 760, 45, sf::Color(163, 73, 164)));
        
        return initList;
     }

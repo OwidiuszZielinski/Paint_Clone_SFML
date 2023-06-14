@@ -269,8 +269,8 @@ int main()
 				if (!checkCords()) {
 					sf::Vector2f ms = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
 					sf::Vector2i relCordsi = sf::Mouse::getPosition(window);
-					std::cout << "FROM IMAGE: X :" << relCordsi.x << " Y: " << relCordsi.y << std::endl;
-					sf::Image image = canvas.getTexture().copyToImage();
+					//std::cout << "FROM IMAGE: X :" << relCordsi.x << " Y: " << relCordsi.y << std::endl;
+					
 					if (ms.y > 100) {
 						brush.setPosition(ms);
 						if (currentTool != nullptr)
@@ -279,12 +279,13 @@ int main()
 							FillPen* fillPen = dynamic_cast<FillPen*>(currentTool);
 							if (fillPen != nullptr)
 							{
+								sf::Image image = canvas.getTexture().copyToImage();
 								sf::Texture texture;
 								sf::Sprite sprite;
-
+								image.flipVertically();
 								fillPen->floodFill(image, relCordsi, lineColor);
 								//Odwrócenie canvasu
-								image.flipVertically();
+								
 								texture.loadFromImage(image);
 								sprite.setTexture(texture);
 								canvas.draw(sf::Sprite(texture));
@@ -330,6 +331,7 @@ int main()
 							canvas.draw(clear);
 							sf::Color color = picker.makeColorFromHexString(setHex);
 							brush.setFillColor(color);
+							lineColor = color;
 							pick.setColor(color);
 							pick.draw(canvas);
 						}
